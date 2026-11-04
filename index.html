@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sanskrit with Rishi · Learning Resources</title>
+<meta name="description" content="Free interactive Sanskrit learning resources by Dr Rishi Handa.">
+<style>
+  :root {
+    --ink: #2b2118;
+    --muted: #6b5d50;
+    --paper: #fbf7f0;
+    --card: #ffffff;
+    --saffron: #c8641e;
+    --saffron-dark: #9c4a12;
+    --line: #e8dccb;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+  }
+  header {
+    text-align: center;
+    padding: 56px 20px 36px;
+    border-bottom: 1px solid var(--line);
+    background: linear-gradient(180deg, #f6ead8 0%, var(--paper) 100%);
+  }
+  .devanagari {
+    font-family: "Arial Unicode MS", "Nirmala UI", "Noto Sans Devanagari", "Mangal", sans-serif;
+    font-size: 2.2rem;
+    color: var(--saffron);
+    margin: 0 auto 6px;
+  }
+  h1 { font-size: 2rem; margin: 0 0 8px; letter-spacing: 0.01em; }
+  header p { color: var(--muted); margin: 0 auto; max-width: 560px; font-size: 1.05rem; }
+  main { max-width: 900px; margin: 0 auto; padding: 36px 20px 24px; }
+  h2 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin: 0 0 16px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+  }
+  a.card {
+    display: flex;
+    flex-direction: column;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 24px;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  }
+  a.card:hover, a.card:focus-visible {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(80, 50, 20, 0.12);
+    border-color: var(--saffron);
+    outline: none;
+  }
+  .icon {
+    font-family: "Arial Unicode MS", "Nirmala UI", "Noto Sans Devanagari", "Mangal", sans-serif;
+    font-size: 1.6rem;
+    width: 52px; height: 52px;
+    display: grid; place-items: center;
+    border-radius: 12px;
+    background: #fbeee0;
+    color: var(--saffron-dark);
+    margin-bottom: 14px;
+  }
+  .card h3 { margin: 0 0 6px; font-size: 1.2rem; }
+  .card p { margin: 0 0 18px; color: var(--muted); flex-grow: 1; }
+  .tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--saffron-dark);
+    background: #fbeee0;
+    padding: 2px 10px;
+    border-radius: 999px;
+    margin-bottom: 10px;
+    align-self: flex-start;
+  }
+  .go { font-weight: 600; color: var(--saffron); }
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.9rem;
+    padding: 28px 20px 40px;
+  }
+  footer a { color: var(--saffron-dark); }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="devanagari">संस्कृतम्</p>
+  <h1>Sanskrit with Rishi</h1>
+  <p>Interactive resources to help you practise Sanskrit at your own pace.</p>
+</header>
+
+<main>
+  <h2>Resources</h2>
+  <div class="grid">
+
+    <a class="card" href="sentence-trainer.html">
+      <div class="icon">वा</div>
+      <span class="tag">Lessons 11–20</span>
+      <h3>Sanskrit Sentence Trainer</h3>
+      <p>Work through ten sets of practice sentences: look up word meanings, use hints, build the translation, and practise sandhi.</p>
+      <span class="go">Open trainer →</span>
+    </a>
+
+    <a class="card" href="gita-verse-trainer.html">
+      <div class="icon">गी</div>
+      <span class="tag">IGCSE</span>
+      <h3>Bhagavad Gītā Verse Trainer</h3>
+      <p>Study the set verses word by word, matching the Sanskrit to its English meaning so you can answer questions on any detail.</p>
+      <span class="go">Open trainer →</span>
+    </a>
+
+  </div>
+</main>
+
+<footer>
+  © 2026 Dr Rishi Handa · <a href="https://sanskritwithrishi.com">sanskritwithrishi.com</a>
+</footer>
+
+</body>
+</html>
