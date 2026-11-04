@@ -35,7 +35,9 @@ header p.sub{margin:6px auto 0;font-size:1rem;opacity:.82;max-width:560px}
 
 main{flex:1;width:100%;max-width:960px;margin:0 auto;padding:28px 22px 20px}
 main h2{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 4px 12px;font-weight:700}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+@media (max-width:700px){.grid{grid-template-columns:1fr}}
+.grid.one{grid-template-columns:1fr}
 
 a.card{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;text-decoration:none;color:inherit;transition:transform .12s,border-color .15s,box-shadow .15s}
 a.card:hover,a.card:focus-visible{border-color:var(--maroon);transform:translateY(-2px);box-shadow:0 8px 20px rgba(107,20,22,.10);outline:none}
@@ -46,6 +48,7 @@ a.card:hover,a.card:focus-visible{border-color:var(--maroon);transform:translate
 .card .go{align-self:flex-start;background:var(--maroon);color:#fff;border-radius:999px;padding:7px 16px;font-size:.92rem;font-weight:600}
 a.card:hover .go{background:var(--maroon-d)}
 
+main h2.sep{margin-top:36px}
 footer{text-align:center;color:var(--muted);font-size:.9rem;padding:22px 20px 32px}
 footer a{color:var(--maroon)}
 </style>
@@ -59,9 +62,14 @@ footer a{color:var(--maroon)}
 </header>
 
 <main>
-  <h2>Resources</h2>
+  <h2>Trainers</h2>
   <div class="grid">
-
+    <a class="card" href="grammar-trainer.html">
+      <span class="word">व्याकरणम्</span>
+      <h3>Sanskrit Grammar Trainer</h3>
+      <p>Practise the grammar from your lessons, one point at a time.</p>
+      <span class="go">Open trainer →</span>
+    </a>
     <a class="card" href="sentence-trainer.html">
       <span class="word">वाक्यम्</span>
       <span class="tag">Lessons 11–20</span>
@@ -69,7 +77,12 @@ footer a{color:var(--maroon)}
       <p>Work through ten sets of practice sentences: look up word meanings, use hints, build the translation, and practise sandhi.</p>
       <span class="go">Open trainer →</span>
     </a>
-
+    <a class="card" href="story-trainer.html">
+      <span class="word">कथा</span>
+      <h3>Sanskrit Story Trainer</h3>
+      <p>Read the lesson stories in Sanskrit and work out their meaning in English.</p>
+      <span class="go">Open trainer →</span>
+    </a>
     <a class="card" href="igcse-gita-verse-trainer.html">
       <span class="word">गीता</span>
       <span class="tag">IGCSE</span>
@@ -77,7 +90,16 @@ footer a{color:var(--maroon)}
       <p>Study the set verses word by word, matching the Sanskrit to its English meaning so you can answer questions on any detail.</p>
       <span class="go">Open trainer →</span>
     </a>
+  </div>
 
+  <h2 class="sep">Paradigms</h2>
+  <div class="grid one">
+    <a class="card" href="paradigms-trainer.html">
+      <span class="word">रूपाणि</span>
+      <h3>Sanskrit Paradigms Trainer</h3>
+      <p>Learn and test yourself on the noun and verb tables, form by form.</p>
+      <span class="go">Open trainer →</span>
+    </a>
   </div>
 </main>
 
