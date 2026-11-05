@@ -31,6 +31,9 @@ button{font-family:inherit;font-size:inherit;cursor:pointer}
 
 /* Header */
 header{background:var(--maroon);color:#fff;padding:14px 22px;display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between}
+.homebtn{display:inline-block;margin:0 0 6px;padding:4px 11px;border-radius:999px;font-size:.8rem;font-weight:600;line-height:1.3;color:#fff;text-decoration:none;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);transition:background .15s,border-color .15s;-webkit-tap-highlight-color:transparent}
+.homebtn:hover,.homebtn:focus-visible{background:rgba(255,255,255,.24);border-color:rgba(255,255,255,.5);outline:none}
+@media (max-width:600px){.homebtn{font-size:.85rem;padding:6px 13px}}
 .brand h1{font-family:var(--serif);font-size:1.35rem;margin:0;letter-spacing:.01em}
 .brand p{margin:2px 0 0;font-size:.88rem;opacity:.82}
 .controls{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
@@ -201,6 +204,7 @@ footer a{color:var(--maroon)}
 <body>
 <header>
   <div class="brand">
+    <a class="homebtn" href="index.html">← All resources</a>
     <h1>Sanskrit Sentence Trainer</h1>
     <p>Translate in order, one word at a time</p>
   </div>
