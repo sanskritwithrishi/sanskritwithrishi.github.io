@@ -164,6 +164,11 @@ header{background:var(--maroon);color:#fff;padding:14px 22px;display:flex;flex-w
 .bstats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
 .bs{background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:.88rem;font-weight:600}
 .bs b{font-variant-numeric:tabular-nums}
+.seg{display:inline-flex;align-items:center;gap:2px;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:3px;margin-left:auto}
+.segl{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:var(--muted);padding:0 8px}
+.seg button{border:0;background:none;border-radius:999px;padding:4px 12px;font-size:.88rem;font-weight:600;color:var(--muted)}
+.seg button.on{background:var(--maroon);color:#fff}
+@media (max-width:600px){.seg{margin-left:0}}
 .prompt{background:var(--gold-l);border-left:4px solid var(--gold);border-radius:10px;padding:10px 14px;margin:4px 0 8px;font-size:1rem;color:#5e430f}
 .prompt b{color:var(--ink)}
 .prompt .pgl{font-family:var(--serif);font-style:italic}
@@ -332,7 +337,7 @@ footer a{color:var(--maroon)}
 <div class="modal" id="help" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
   <div class="box">
     <h2 id="helpTitle">How to use the trainer</h2>
-    <p>Pick a table from the list: a noun, the pronoun <i>tad</i>, or the verb <i>bhavati</i> in the present, past, or future. Each table has four steps.</p>
+    <p>Pick a table from the list: a noun; a pronoun (<i>tad</i>, <i>asmad</i>, or <i>yuṣmad</i>); or a verb in the present, past, or future, either <i>bhavati</i> with parasmaipada endings or <i>vardhate</i> with ātmanepada endings. Each table has four steps.</p>
     <ol>
       <li><b>① Study.</b> Tap any form to see what it means. <b>✂️ Endings</b> shows the ending of each form, and <b>👯 Spot the twins</b> colours the forms that look the same. When you feel ready, turn on <b>🙈 Cover and recall</b>: say each form aloud, then tap to check. Flip every card to earn your Study tick.</li>
       <li><b>② Build the table.</b> The gold box shows which form to find. Tap the right tile at the bottom to fill it in. You can tap any empty box to choose a different one. Beat the clock and make as few mistakes as you can.</li>
@@ -383,6 +388,9 @@ const PERSONS = [["3rd person","he, she, it · they"],["2nd person","you"],["1st
 const VG = {
   pres:[["he, she, or it is","they two are","they are"],["you are","you two are","you all are"],["I am","we two are","we are"]],
   past:[["he, she, or it was","they two were","they were"],["you were","you two were","you all were"],["I was","we two were","we were"]],
+  vpres:[["he, she, or it grows","they two grow","they grow"],["you grow","you two grow","you all grow"],["I grow","we two grow","we grow"]],
+  vpast:[["he, she, or it grew","they two grew","they grew"],["you grew","you two grew","you all grew"],["I grew","we two grew","we grew"]],
+  vfut:[["he, she, or it will grow","they two will grow","they will grow"],["you will grow","you two will grow","you all will grow"],["I will grow","we two will grow","we will grow"]],
   fut:[["he, she, or it will be","they two will be","they will be"],["you will be","you two will be","you all will be"],["I will be","we two will be","we will be"]]
 };
 
@@ -408,24 +416,40 @@ const P = [
  {id:"manas",grp:"Nouns",deva:"मनस्",name:"manas",tag:"neuter · -as",gloss:"mind",stem:"man",np:["the mind","two minds","the minds"],
   f:"मनः मनसी मनांसि|मनः मनसी मनांसि|मनसा मनोभ्याम् मनोभिः|मनसे मनोभ्याम् मनोभ्यः|मनसः मनोभ्याम् मनोभ्यः|मनसः मनसोः मनसाम्|मनसि मनसोः मनःसु|मनः मनसी मनांसि",
   tips:["Before an ending that starts with bh, -as becomes -o: <i>manobhyām</i>, <i>manobhiḥ</i>.","The ablative and genitive singular are the same: <i>manasaḥ</i>."]},
- {id:"tadm",grp:"Pronoun tad",deva:"तद्",name:"tad",tag:"masculine",gloss:"he; that",stem:"t",pr:[["he","him","his"],["they two","them two","of them two"],["they","them","their"]],
+ {id:"tadm",grp:"Pronouns",sfx:"(m.)",deva:"तद्",name:"tad",tag:"masculine",gloss:"he; that",stem:"t",pr:[["he","him","his"],["they two","them two","of them two"],["they","them","their"]],
   f:"सः तौ ते|तम् तौ तान्|तेन ताभ्याम् तैः|तस्मै ताभ्याम् तेभ्यः|तस्मात् ताभ्याम् तेभ्यः|तस्य तयोः तेषाम्|तस्मिन् तयोः तेषु",
   tips:["There is no vocative: you don’t call out to “he”.","Only <i>saḥ</i> starts with s; every other form starts with t.","Compare <i>rāma</i>: <i>tasya</i> / <i>rāmasya</i>, <i>tau</i> / <i>rāmau</i>, <i>tān</i> / <i>rāmān</i>."]},
- {id:"tadf",grp:"Pronoun tad",deva:"तद्",name:"tad",tag:"feminine",gloss:"she; that",stem:"t",pr:[["she","her","her"],["they two","them two","of them two"],["they","them","their"]],
+ {id:"tadf",grp:"Pronouns",sfx:"(f.)",deva:"तद्",name:"tad",tag:"feminine",gloss:"she; that",stem:"t",pr:[["she","her","her"],["they two","them two","of them two"],["they","them","their"]],
   f:"सा ते ताः|ताम् ते ताः|तया ताभ्याम् ताभिः|तस्यै ताभ्याम् ताभ्यः|तस्याः ताभ्याम् ताभ्यः|तस्याः तयोः तासाम्|तस्याम् तयोः तासु",
   tips:["Only <i>sā</i> starts with s.","Compare <i>sītā</i>: <i>tayā</i> / <i>sītayā</i>, <i>tābhiḥ</i> / <i>sītābhiḥ</i>, <i>tāsu</i> / <i>sītāsu</i>."]},
- {id:"tadn",grp:"Pronoun tad",deva:"तद्",name:"tad",tag:"neuter",gloss:"it; that",stem:"t",pr:[["it","it","its"],["they two","them two","of them two"],["they","them","their"]],
+ {id:"tadn",grp:"Pronouns",sfx:"(n.)",deva:"तद्",name:"tad",tag:"neuter",gloss:"it; that",stem:"t",pr:[["it","it","its"],["they two","them two","of them two"],["they","them","their"]],
   f:"तत् ते तानि|तत् ते तानि|तेन ताभ्याम् तैः|तस्मै ताभ्याम् तेभ्यः|तस्मात् ताभ्याम् तेभ्यः|तस्य तयोः तेषाम्|तस्मिन् तयोः तेषु",
   tips:["Only the nominative and accusative differ from the masculine: <i>tat</i>, <i>te</i>, <i>tāni</i>.","As in every neuter, the nominative and accusative are the same."]},
- {id:"pres",grp:"Verb bhū (bhavati)",type:"verb",tense:"pres",deva:"भवति",name:"bhavati",tag:"present tense",gloss:"is, becomes",stem:"bhav",
+ {id:"asmad",grp:"Pronouns",deva:"अस्मद्",name:"asmad",tag:"1st person · I, we",gloss:"I; we",stem:"",personal:1,pr:[["I","me","my"],["we two","us two","of us two"],["we","us","our"]],
+  f:"अहम् आवाम् वयम्|माम् आवाम् अस्मान्|मया आवाभ्याम् अस्माभिः|मह्यम् आवाभ्याम् अस्मभ्यम्|मत् आवाभ्याम् अस्मत्|मम आवयोः अस्माकम्|मयि आवयोः अस्मासु",
+  tips:["There is no vocative, and no masculine, feminine, or neuter: the same forms are used for everyone.","The dual forms all start with <i>āv-</i>: <i>āvām</i>, <i>āvābhyām</i>, <i>āvayoḥ</i>.","Unlike nouns, the dative and ablative plural are different: <i>asmabhyam</i> (to us), <i>asmat</i> (from us).","You may also meet short forms: <i>mā</i> (me), <i>me</i> (to me, my), <i>nau</i> (us two), and <i>naḥ</i> (us, our)."]},
+ {id:"yushmad",grp:"Pronouns",deva:"युष्मद्",name:"yuṣmad",tag:"2nd person · you",gloss:"you",stem:"",personal:1,pr:[["you","you","your"],["you two","you two","of you two"],["you all","you all","your"]],
+  f:"त्वम् युवाम् यूयम्|त्वाम् युवाम् युष्मान्|त्वया युवाभ्याम् युष्माभिः|तुभ्यम् युवाभ्याम् युष्मभ्यम्|त्वत् युवाभ्याम् युष्मत्|तव युवयोः युष्माकम्|त्वयि युवयोः युष्मासु",
+  tips:["There is no vocative, and the same forms are used for everyone.","Compare <i>asmad</i>: <i>mayā / tvayā</i>, <i>mama / tava</i>, <i>mayi / tvayi</i>, <i>asmākam / yuṣmākam</i>.","The dual forms all start with <i>yuv-</i>: <i>yuvām</i>, <i>yuvābhyām</i>, <i>yuvayoḥ</i>.","You may also meet short forms: <i>tvā</i> (you), <i>te</i> (to you, your), <i>vām</i> (you two), and <i>vaḥ</i> (you all, your)."]},
+ {id:"pres",grp:"Verb bhavati · parasmaipada endings",type:"verb",tense:"pres",deva:"भवति",name:"bhavati",tag:"present tense",gloss:"is, becomes",stem:"bhav",
   f:"भवति भवतः भवन्ति|भवसि भवथः भवथ|भवामि भवावः भवामः",
   tips:["The 1st person has a long ā: <i>bhavāmi</i>, <i>bhavāvaḥ</i>, <i>bhavāmaḥ</i>.","The 3rd person plural ends in -nti: <i>bhavanti</i>."]},
- {id:"past",grp:"Verb bhū (bhavati)",type:"verb",tense:"past",deva:"अभवत्",name:"abhavat",tag:"past tense (imperfect)",gloss:"was, became",stem:"abhav",
+ {id:"past",grp:"Verb bhavati · parasmaipada endings",type:"verb",tense:"past",deva:"अभवत्",name:"abhavat",tag:"past tense (imperfect)",gloss:"was, became",stem:"abhav",
   f:"अभवत् अभवताम् अभवन्|अभवः अभवतम् अभवत|अभवम् अभवाव अभवाम",
   tips:["The past adds a- to the front: a + bhava + t = <i>abhavat</i>.","Its endings are shorter than the present: <i>bhavati → abhavat</i>, <i>bhavanti → abhavan</i>.","Watch out: <i>abhavat</i> (he was) and <i>abhavata</i> (you all were) differ only at the very end."]},
- {id:"fut",grp:"Verb bhū (bhavati)",type:"verb",tense:"fut",deva:"भविष्यति",name:"bhaviṣyati",tag:"future tense",gloss:"will be, will become",stem:"bhaviṣy",
+ {id:"fut",grp:"Verb bhavati · parasmaipada endings",type:"verb",tense:"fut",deva:"भविष्यति",name:"bhaviṣyati",tag:"future tense",gloss:"will be, will become",stem:"bhaviṣy",
   f:"भविष्यति भविष्यतः भविष्यन्ति|भविष्यसि भविष्यथः भविष्यथ|भविष्यामि भविष्यावः भविष्यामः",
   tips:["The future adds -iṣya- to <i>bhav-</i>, then uses exactly the same endings as the present.","<i>bhavati → bhaviṣyati</i>, <i>bhavāmi → bhaviṣyāmi</i>, <i>bhavanti → bhaviṣyanti</i>."]}
+,
+ {id:"vpres",grp:"Verb vardhate · ātmanepada endings",type:"verb",tense:"vpres",deva:"वर्धते",name:"vardhate",tag:"present tense",gloss:"grows, increases",stem:"vardh",
+  f:"वर्धते वर्धेते वर्धन्ते|वर्धसे वर्धेथे वर्धध्वे|वर्धे वर्धावहे वर्धामहे",
+  tips:["These are ātmanepada endings. Compare <i>bhavati</i>: <i>-ti → -te</i>, <i>-nti → -nte</i>, <i>-si → -se</i>.","The 1st person singular is short: <i>vardhe</i>, “I grow”.","The dual has a long e: <i>vardhete</i>, <i>vardhethe</i>."]},
+ {id:"vpast",grp:"Verb vardhate · ātmanepada endings",type:"verb",tense:"vpast",deva:"अवर्धत",name:"avardhata",tag:"past tense (imperfect)",gloss:"grew, increased",stem:"avardh",
+  f:"अवर्धत अवर्धेताम् अवर्धन्त|अवर्धथाः अवर्धेथाम् अवर्धध्वम्|अवर्धे अवर्धावहि अवर्धामहि",
+  tips:["Like <i>abhavat</i>, the past adds a- to the front: a + vardha + ta = <i>avardhata</i>.","Compare <i>abhavat</i>: <i>-t → -ta</i>, <i>-n → -nta</i>, <i>-m → -e</i>.","The 1st person dual and plural end in -hi: <i>avardhāvahi</i>, <i>avardhāmahi</i>."]},
+ {id:"vfut",grp:"Verb vardhate · ātmanepada endings",type:"verb",tense:"vfut",deva:"वर्धिष्यते",name:"vardhiṣyate",tag:"future tense",gloss:"will grow, will increase",stem:"vardhiṣy",
+  f:"वर्धिष्यते वर्धिष्येते वर्धिष्यन्ते|वर्धिष्यसे वर्धिष्येथे वर्धिष्यध्वे|वर्धिष्ये वर्धिष्यावहे वर्धिष्यामहे",
+  tips:["The future adds -iṣya- to <i>vardh-</i>, then uses exactly the same ātmanepada endings as the present.","<i>vardhate → vardhiṣyate</i>, <i>vardhe → vardhiṣye</i>, <i>vardhante → vardhiṣyante</i>."]}
 ];
 const NOUN_TIPS = [
   "The dative and ablative plural are always the same.",
@@ -458,7 +482,7 @@ function tr(s){
   }
   return o;
 }
-function ending(p,s){ const t=tr(s); return t.startsWith(p.stem) && t.length>p.stem.length ? "-"+t.slice(p.stem.length) : t; }
+function ending(p,s){ const t=tr(s); if(!p.stem) return t; return t.startsWith(p.stem) && t.length>p.stem.length ? "-"+t.slice(p.stem.length) : t; }
 
 /* Labels and glosses */
 const rc = i => [Math.floor(i/3), i%3];
@@ -513,6 +537,8 @@ const ACH=[
  ["recall","🙈","Total recall","Flip every card in Cover and recall"],
  ["tad","🔱","Three genders","Build all three tables of tad"],
  ["time","⏳","Time traveller","Build bhavati in the present, past, and future"],
+ ["atma","🌿","Ātmanepada ace","Build vardhate in the present, past, and future"],
+ ["iyou","🤝","You and I","Build the tables of asmad and yuṣmad"],
  ["nouns","📜","Seven nouns","Earn a star on all seven nouns"],
  ["blitz20","🏹","Blitz hero","Get 20 right in one Blitz"],
  ["blitz40","🦅","Blitz legend","Get 40 right in one Blitz"],
@@ -647,7 +673,7 @@ function renderList(){
     if(p.grp!==g){ g=p.grp; html+=`<h2>${g}</h2>`; }
     const s=starsOf(p.id);
     html+=`<button class="pi ${cur.mode!=="blitz"&&i===cur.p?"active":""}" data-i="${i}">
-      <span class="nm">${p.deva}<small>${p.name}${p.grp.startsWith("Pronoun")?" ("+p.tag[0]+".)":""}</small></span>
+      <span class="nm">${p.deva}<small>${p.name}${p.sfx?" "+p.sfx:""}</small></span>
       <span class="sc"><span class="s ${s?"":"zero"}">★ ${s}/9</span><span class="mbar"><i class="${s===9?"full":""}" style="width:${s/9*100}%"></i></span></span>
       <span class="tg">${p.tag}${S.study[p.id]?" · ✓ recalled":""}</span></button>`;
   });
@@ -712,7 +738,7 @@ function viewStudy(){
       const cls=["cell"]; if(SO.tw&&tw[i]) cls.push("tw"+tw[i]); if(SO.cover&&!SO.flipped.has(i)) cls.push("covered"); if(SO.sel===i) cls.push("selx");
       return `<button class="${cls.join(" ")}" data-i="${i}" aria-label="${label(p,i)}">${cellInner(p,p.forms[i])}</button>`;})}</div>
     <div class="info" id="sinfo">${SO.sel!=null?infoHTML(p,SO.sel):`<span class="ph">Tap a form to see its case, number, and meaning.</span>`}</div>
-    <div class="tips"><h4>💡 Patterns to notice</h4><ul>${(p.type==="noun"?NOUN_TIPS:[]).concat(p.type==="noun"?["The vocative dual and plural are the same as the nominative."]:[]).concat(p.tips).map(t=>`<li>${t}</li>`).join("")}</ul></div>
+    <div class="tips"><h4>💡 Patterns to notice</h4><ul>${(p.type==="noun"&&!p.personal?NOUN_TIPS:[]).concat(p.nr===8?["The vocative dual and plural are the same as the nominative."]:[]).concat(p.tips).map(t=>`<li>${t}</li>`).join("")}</ul></div>
     <div class="qact"><span></span><button class="abtn primary" id="toBuild">Ready? Build the table →</button></div>`;
   V().querySelectorAll(".optbar .tbtn").forEach(b=>b.onclick=()=>{
     const k=b.dataset.t; SO[k]=!SO[k]; if(k==="cover"){ SO.flipped=new Set(); SO.sel=null; } sfx.tap(); viewStudy();
@@ -745,9 +771,20 @@ function infoHTML(p,i){
 let B=null;
 function viewBuild(){
   const p=P[cur.p];
-  B={p,filled:new Array(p.n).fill(false),sel:0,mist:0,t0:Date.now(),done:false,order:shuffle(p.uniq),iv:null,count:0};
+  B={p,filled:new Array(p.n).fill(false),sel:firstCell(p),mist:0,t0:Date.now(),done:false,order:shuffle(p.uniq),iv:null,count:0};
   B.iv=setInterval(()=>{ const el=$("btime"); if(el&&!B.done) el.textContent=fmt(Date.now()-B.t0); },250);
   drawBuild();
+}
+const ORDERS=[["across","→ Across"],["down","↓ Down"],["random","🎲 Random"]];
+const fillOrder = () => S.fillOrder||"across";
+function seqOf(p){ const s=[]; if(fillOrder()==="down"){ for(let c=0;c<3;c++) for(let r=0;r<p.nr;r++) s.push(r*3+c); } else for(let j=0;j<p.n;j++) s.push(j); return s; }
+function randomEmpty(p,not){ const e=[...Array(p.n).keys()].filter(j=>!B.filled[j]&&j!==not); return e.length?e[Math.floor(Math.random()*e.length)]:not; }
+function firstCell(p){ return fillOrder()==="random" ? Math.floor(Math.random()*p.n) : 0; }
+function nextCell(p,i){
+  if(fillOrder()==="random") return randomEmpty(p,-1);
+  const s=seqOf(p), at=s.indexOf(i);
+  for(let k=1;k<=s.length;k++){ const j=s[(at+k)%s.length]; if(!B.filled[j]) return j; }
+  return -1;
 }
 const fmt=ms=>{ const s=Math.floor(ms/1000); return Math.floor(s/60)+":"+String(s%60).padStart(2,"0"); };
 function drawBuild(msg){
@@ -756,6 +793,7 @@ function drawBuild(msg){
   V().innerHTML=`<div class="bstats">
       <span class="bs">⏱ <b id="btime">${fmt(Date.now()-B.t0)}</b></span>
       <span class="bs">✅ <b>${B.count}</b>/${p.n}</span>
+      <span class="seg" role="group" aria-label="Fill order"><span class="segl">Fill order</span>${ORDERS.map(o=>`<button class="${fillOrder()===o[0]?"on":""}" data-o="${o[0]}" aria-pressed="${fillOrder()===o[0]}">${o[1]}</button>`).join("")}</span>
       <span class="bs">❌ <b>${B.mist}</b></span>
       ${best?`<span class="bs">🏅 Best <b>${fmt(best)}</b></span>`:""}
     </div>
@@ -768,6 +806,12 @@ function drawBuild(msg){
     <div class="qact"><button class="abtn" id="bRestart">Start again</button><span class="instr" style="margin:0">Tip: you can tap any empty box to choose it.</span></div>`;
   V().querySelectorAll(".cell.empty").forEach(b=>b.onclick=()=>{ B.sel=+b.dataset.i; sfx.tap(); drawBuild(); });
   V().querySelectorAll(".tile").forEach(t=>t.onclick=()=>buildTap(t));
+  V().querySelectorAll(".seg button").forEach(b=>b.onclick=()=>{
+    S.fillOrder=b.dataset.o; save(); sfx.tap();
+    if(S.fillOrder==="random") B.sel=randomEmpty(p,B.sel);
+    else if(B.count===0) B.sel=0;
+    drawBuild();
+  });
   $("bRestart").onclick=()=>{ stopTimers(); viewBuild(); };
 }
 function buildTap(t){
@@ -778,8 +822,7 @@ function buildTap(t){
     sfx.ok(); renderCombo(true);
     if(B.count===p.n){ finishBuild(); return; }
     // next empty in reading order after current, else first empty
-    let nx=-1; for(let k=1;k<=p.n;k++){ const j=(i+k)%p.n; if(!B.filled[j]){nx=j;break;} }
-    B.sel=nx; drawBuild();
+    B.sel=nextCell(p,i); drawBuild();
   } else {
     B.mist++; combo=0; weak(p,i,false); noteAnswer(false); sfx.bad(); renderCombo();
     t.classList.add("wrong");
@@ -796,6 +839,8 @@ function finishBuild(){
   unlock("grid"); if(B.mist===0) unlock("perfect"); if(ms<45000 && p.type==="noun") unlock("speed");
   if(["tadm","tadf","tadn"].every(id=>(S.medals[id]||{}).build)) unlock("tad");
   if(["pres","past","fut"].every(id=>(S.medals[id]||{}).build)) unlock("time");
+  if(["vpres","vpast","vfut"].every(id=>(S.medals[id]||{}).build)) unlock("atma");
+  if(["asmad","yushmad"].every(id=>(S.medals[id]||{}).build)) unlock("iyou");
   const nxt = cur.p<P.length-1 ? P[cur.p+1] : null;
   V().innerHTML=`<div class="result">
     <div class="big">${starStr(st)}</div>
@@ -932,7 +977,7 @@ function bzSub(sel){ return (bzIsAll(sel) ? "Every table, mixed." : "Your "+sel.
 function viewBlitzIntro(){
   if(!S.bzPick) S.bzPick = bzSel();
   const sel=S.bzPick, groups=[...new Set(P.map(p=>p.grp))];
-  const chip = p => `<button class="bzc ${sel.includes(p.id)?"on":""}" data-id="${p.id}" aria-pressed="${sel.includes(p.id)}"><span class="deva">${p.deva}</span> <i>${p.name}</i>${p.grp.startsWith("Pronoun")?" ("+p.tag[0]+".)":p.type==="verb"?" · "+p.tag.split(" ")[0]:""}</button>`;
+  const chip = p => `<button class="bzc ${sel.includes(p.id)?"on":""}" data-id="${p.id}" aria-pressed="${sel.includes(p.id)}"><span class="deva">${p.deva}</span> <i>${p.name}</i>${p.sfx?" "+p.sfx:p.type==="verb"?" · "+p.tag.split(" ")[0]:""}</button>`;
   V().innerHTML=`<div class="result" style="padding-bottom:6px;animation:none"><div class="big">⚡</div><h3>60 seconds. ${bzIsAll(sel)?"Every table.":"Your choice of tables."}</h3>
     <p>Make forms and name forms as fast as you can. Combos multiply your points, and a wrong answer costs <b>3 seconds</b>.</p></div>
     <div class="bzpick">
