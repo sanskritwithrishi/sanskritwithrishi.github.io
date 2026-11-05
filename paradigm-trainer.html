@@ -33,6 +33,9 @@ button{font-family:inherit;font-size:inherit;cursor:pointer;color:inherit}
 header{background:var(--maroon);color:#fff;padding:14px 22px;display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between}
 .brand h1{font-family:var(--serif);font-size:1.35rem;margin:0;letter-spacing:.01em}
 .brand p{margin:2px 0 0;font-size:.88rem;opacity:.82}
+.home{display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;font-size:.82rem;font-weight:600;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:3px 12px;margin-bottom:8px;transition:background .15s}
+.home:hover{background:rgba(255,255,255,.24)}
+.home:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .toggle{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);color:#fff;padding:6px 12px 6px 8px;border-radius:999px;font-size:.9rem}
 .toggle .sw{width:34px;height:20px;border-radius:999px;background:rgba(255,255,255,.3);position:relative;transition:.2s}
@@ -306,6 +309,7 @@ footer a{color:var(--maroon)}
 <body>
 <header>
   <div class="brand">
+    <a class="home" href="index.html">← All resources</a>
     <h1>Sanskrit Paradigms Trainer</h1>
     <p>Learn every form, one table at a time</p>
   </div>
