@@ -49,6 +49,13 @@ a.card:hover,a.card:focus-visible{border-color:var(--maroon);transform:translate
 a.card:hover .go{background:var(--maroon-d)}
 
 main h2.sep{margin-top:36px}
+form.card.lock{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:0;cursor:default}
+.lock:hover{transform:none!important;box-shadow:none!important;border-color:var(--line)!important}
+.pwrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.pwrow input{font-family:var(--sans);font-size:1rem;padding:8px 12px;border:1px solid var(--line);border-radius:8px;min-width:220px;color:var(--ink)}
+.pwrow input:focus{outline:2px solid var(--maroon);outline-offset:1px}
+.pwrow button{border:0;cursor:pointer;font-family:inherit}
+.lock .err{color:#b3261e;margin:10px 0 0;flex-grow:0}
 footer{text-align:center;color:var(--muted);font-size:.9rem;padding:22px 20px 32px}
 footer a{color:var(--maroon)}
 </style>
@@ -101,11 +108,44 @@ footer a{color:var(--maroon)}
       <span class="go">Open trainer →</span>
     </a>
   </div>
+  <h2 class="sep">School students</h2>
+  <div class="grid one" id="schoolArea">
+    <form class="card lock" id="lockForm" autocomplete="off">
+      <span class="word">विद्यालयः</span>
+      <h3>School resources</h3>
+      <p>Enter the password your teacher gave you.</p>
+      <div class="pwrow">
+        <input type="password" id="pw" aria-label="Password" placeholder="Password">
+        <button type="submit" class="go">Unlock →</button>
+      </div>
+      <p class="err" id="err" hidden>That password isn’t right. Please try again.</p>
+    </form>
+  </div>
 </main>
 
 <footer>
   © 2026 Dr Rishi Handa · <a href="https://sanskritwithrishi.com">sanskritwithrishi.com</a>
 </footer>
 
+<script>
+(function(){
+  var B={"s":"BNg0h0jwUwcVniSFAqlQAg==","i":"/5xOwyQgjT0j5F31","c":"MWNPK5nPhVw6tY/Pbf19yJUO694yJEuQEop89hNuF3UwzT3bHKgdTM7Ir2umSSBBD78dtawRP0PMQTK09IOeNKfNzfZ3RTS/7p38ARSefbCy22SZi7J+q66I9WCSmw86ee8DB/1RjBPMXvHalHEJbZjq5jGMht0QvAKp+CA9y2l6oWP4XNj6gfQMVC8FdvC7gMKE27t02odE//ncEVPL7Pas8IdqIXDKpCxTlyQFFQeHZIypg2KtO4jZW7kZyDdhW1CHjhOYU7SPiC7OAIWHHa2/xehuQO9d4+pLTwZx2pKiLSmPN9csw66OLUQS4n/tv90pWugnZV2eVxjaf8gt9BLEHC4yk4rKCL6idgU79Y2C2XzF0qbuEuE+7KoaQY8OEMxhF24Qlk/m7ramxpGTxLMsQgXGnjSWNOpCGnCVO9rN1ISwjJWq"};
+  function b64(s){var r=atob(s),a=new Uint8Array(r.length);for(var i=0;i<r.length;i++)a[i]=r.charCodeAt(i);return a;}
+  async function unlock(pw){
+    var base=await crypto.subtle.importKey("raw",new TextEncoder().encode(pw),"PBKDF2",false,["deriveKey"]);
+    var key=await crypto.subtle.deriveKey({name:"PBKDF2",salt:b64(B.s),iterations:200000,hash:"SHA-256"},base,{name:"AES-GCM",length:256},false,["decrypt"]);
+    var out=await crypto.subtle.decrypt({name:"AES-GCM",iv:b64(B.i)},key,b64(B.c));
+    return new TextDecoder().decode(out);
+  }
+  function show(html){document.getElementById("schoolArea").innerHTML=html;}
+  try{var saved=sessionStorage.getItem("schoolpw");if(saved){unlock(saved).then(show).catch(function(){});}}catch(e){}
+  document.getElementById("lockForm").addEventListener("submit",function(e){
+    e.preventDefault();
+    var pw=document.getElementById("pw").value.trim();
+    unlock(pw).then(function(h){try{sessionStorage.setItem("schoolpw",pw);}catch(e){}show(h);})
+      .catch(function(){document.getElementById("err").hidden=false;});
+  });
+})();
+</script>
 </body>
 </html>
