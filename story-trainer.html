@@ -477,7 +477,7 @@ function parseWord(w){
 /* ==================================================================
    BUILD WORD OBJECTS
 ================================================================== */
-const plain = s => s.replace(/[“”‘’"(),.!?;:]/g, "").replace(/^\s+|\s+$/g, "");
+const plain = s => s.replace(/[“”"(),!?;:]/g, "").replace(/^[\s‘’.]+|[\s‘’.]+$/g, "");   // keeps apostrophes inside words (Drupada’s)
 function mkWords(sent){
   return sent.w.map(a => {
     const [t, en, lem, code, note] = a;
