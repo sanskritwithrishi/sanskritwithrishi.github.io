@@ -284,6 +284,13 @@ footer{background:var(--band);border-top:none;padding:16px 12px;border-radius:2p
   unicode-range:U+0900-097F,U+1CD0-1CFF,U+A8E0-A8FF,U+200C-200D,U+25CC;
   font-display:block;
 }
+.verse .lbl{align-items:center}
+.vRight{display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap}
+.vvBtn{display:inline-flex;align-items:center;gap:6px;font:inherit;font-family:var(--f-ui,inherit);font-size:.8rem;font-weight:600;letter-spacing:.02em;text-transform:none;color:#fff;background:#6b1416;border:1px solid #6b1416;border-radius:999px;padding:6px 13px;cursor:pointer;transition:background .15s}
+.vvBtn:hover{background:#4e0e10}
+.vvBtn:focus-visible{outline:2px solid #b8862b;outline-offset:2px}
+.vvBtn:disabled{background:transparent;color:var(--muted);border:1px dashed var(--line);cursor:default}
+@media (max-width:480px){.vvBtn{font-size:.85rem;padding:7px 14px}}
 /* ---- Sanskrit with Rishi branding (matches the Sanskrit Sentence Trainer) ---- */
 :root{
   --maroon:#6b1416; --maroon-d:#4e0e10; --maroon-l:#f6e9e6; --gold:#b8862b; --gold-l:#fbf3e2;
@@ -369,12 +376,12 @@ footer a{color:var(--maroon)}
 
   <div class="vidModal" id="vidModal" hidden role="dialog" aria-modal="true" aria-label="How to use the trainer">
     <div class="vidBox">
-      <div class="vidHead"><span>How to use the trainer</span><button class="vidClose" id="vidClose" aria-label="Close video">✕</button></div>
+      <div class="vidHead"><span id="vidTitle">How to use the trainer</span><button class="vidClose" id="vidClose" aria-label="Close video">✕</button></div>
       <div class="vidFrame" id="vidFrame"></div>
     </div>
   </div>
   <section class="verse" aria-label="Verse as given in the exam">
-    <div class="lbl"><span>As it appears in the exam</span><span id="vRef"></span></div>
+    <div class="lbl"><span>As it appears in the exam</span><span class="vRight"><span id="vRef"></span><button type="button" class="vvBtn" id="verseVidBtn">▶ Verse video</button></span></div>
     <div id="vText"></div>
   </section>
 
@@ -1360,8 +1367,17 @@ function renderMastery(){
 }
 
 /* ---------- verse header ---------- */
+/* ---------- verse videos: paste each YouTube link here (unlisted videos work) ---------- */
+const VERSE_VIDEOS={
+  "6.29":"https://youtu.be/k2AytC_jYQY",
+  "6.30":"https://youtu.be/lDxu9yw7lLU",
+  "8.18":"https://youtu.be/vM3sCyOKIpo",
+};
 function renderVerse(){
   $("#vRef").textContent="Bhagavad Gītā "+V.id;
+  const vb=$("#verseVidBtn"), vu=VERSE_VIDEOS[V.id];
+  vb.disabled=!vu; vb.textContent=vu?"▶ Verse video":"Video coming soon";
+  vb.setAttribute("aria-label",vu?`Watch the video for Bhagavad Gītā ${V.id}`:`The video for Bhagavad Gītā ${V.id} is coming soon`);
   const box=$("#vText"); box.innerHTML="";
   V.lines.forEach(L=>{
     const d=L.chunks.map(c=>c.d||joinD(V.words[c.w[0]].d)).join(" ")+" "+L.end;
@@ -1926,13 +1942,20 @@ function vimeoPlayer(u){
   const h=m[2]||(String(u).match(/[?&]h=([0-9a-z]+)/i)||[])[1];
   return `https://player.vimeo.com/video/${m[1]}?autoplay=1&badge=0&autopause=0&dnt=1${h?`&h=${h}`:""}`;
 }
-function openVideo(){
-  const f=$("#vidFrame"), src=vimeoPlayer(TUTORIAL_URL);
-  f.innerHTML=src?`<iframe src="${src}" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen title="IGCSE Gita Verse Trainer Tutorial"></iframe>`:`<p style="margin:0;padding:24px">The tutorial video will be added here soon.</p>`;
+function youtubePlayer(u){
+  const m=String(u).match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([\w-]{11})/i); if(!m) return null;
+  return `https://www.youtube-nocookie.com/embed/${m[1]}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+}
+let vidOpener=null;
+function showPlayer(src,title,opener){
+  vidOpener=opener; $("#vidTitle").textContent=title; $("#vidModal").setAttribute("aria-label",title);
+  $("#vidFrame").innerHTML=src?`<iframe src="${src}" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen title="${title}"></iframe>`:`<p style="margin:0;padding:24px">This video will be added here soon.</p>`;
   $("#vidModal").hidden=false; $("#vidClose").focus();
 }
-function closeVideo(){ $("#vidModal").hidden=true; $("#vidFrame").innerHTML=""; $("#howtoBtn").focus(); }
-$("#howtoBtn").onclick=openVideo; $("#vidClose").onclick=closeVideo;
+function openVideo(){ showPlayer(vimeoPlayer(TUTORIAL_URL),"How to use the trainer",$("#howtoBtn")); }
+function openVerseVideo(){ const u=VERSE_VIDEOS[V.id]; if(u) showPlayer(youtubePlayer(u),`Bhagavad Gītā ${V.id}: verse video`,$("#verseVidBtn")); }
+function closeVideo(){ $("#vidModal").hidden=true; $("#vidFrame").innerHTML=""; (vidOpener||$("#howtoBtn")).focus(); }
+$("#howtoBtn").onclick=openVideo; $("#verseVidBtn").onclick=openVerseVideo; $("#vidClose").onclick=closeVideo;
 $("#vidModal").addEventListener("click",e=>{if(e.target.id==="vidModal")closeVideo();});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#vidModal").hidden)closeVideo();});
 
